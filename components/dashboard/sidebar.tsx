@@ -32,6 +32,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import Logo from "../icon/logo";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -111,9 +112,8 @@ export default function Sidebar({
 
       {/* Sidebar Drawer Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#050608] border-r border-[#12151c] text-gray-300 transition-all duration-300 ease-in-out lg:translate-x-0 ${
-          isCollapsed ? "w-[72px]" : "w-[260px]"
-        } ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#050608] border-r border-[#12151c] text-gray-300 transition-all duration-300 ease-in-out lg:translate-x-0 ${isCollapsed ? "w-[72px]" : "w-[260px]"
+          } ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         {/* Toggle Button for Desktop (Floating on the right border) */}
         {onToggleCollapse && (
@@ -132,23 +132,19 @@ export default function Sidebar({
 
         {/* Brand Header */}
         <div
-          className={`flex items-center h-16 border-b border-[#12151c] px-4 transition-all duration-300 ${
-            isCollapsed ? "justify-center" : "justify-between"
-          }`}
+          className={`flex items-center h-16 border-b border-[#12151c] px-4 transition-all duration-300 ${isCollapsed ? "justify-center" : "justify-between"
+            }`}
         >
           <Link
             href="/verification-center"
             className={`flex items-center group ${isCollapsed ? "gap-0" : "gap-3"}`}
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00b4d8] to-[#0077b6] flex items-center justify-center text-white shadow-[0_0_15px_rgba(0,180,216,0.3)] group-hover:scale-105 transition-transform shrink-0">
-              <GitFork className="w-5 h-5 text-white" />
-            </div>
+            <Logo />
             <div
-              className={`flex flex-col transition-all duration-300 origin-left ${
-                isCollapsed
+              className={`flex flex-col transition-all duration-300 origin-left ${isCollapsed
                   ? "max-w-0 opacity-0 pointer-events-none -translate-x-2"
                   : "max-w-[150px] opacity-100 translate-x-0"
-              }`}
+                }`}
             >
               <span className="text-sm font-bold tracking-tight text-white whitespace-nowrap">
                 GetAvails
@@ -185,34 +181,30 @@ export default function Sidebar({
                 <Link
                   href={item.href}
                   onClick={onClose}
-                  className={`flex items-center transition-all duration-300 group border-t-0 border-r-0 border-b-0 h-[38px] px-3.5 rounded-[10px] relative overflow-hidden ${
-                    isActive
+                  className={`flex items-center transition-all duration-300 group border-t-0 border-r-0 border-b-0 h-[38px] px-3.5 rounded-[10px] relative overflow-hidden ${isActive
                       ? "bg-gradient-to-r from-[#00A5E5]/20 to-[#00A5E5]/[0.08] text-[#00A5E5] border-l-2 border-l-[#00A5E5] font-semibold"
                       : "text-[#8b949e] border-l-2 border-l-transparent hover:text-gray-100 hover:bg-[#0f131a]/40"
-                  }`}
+                    }`}
                 >
                   {/* Icon Container (smoothly centered on collapse) */}
                   <div
-                    className={`flex items-center justify-center shrink-0 transition-all duration-300 ${
-                      isCollapsed ? "w-full" : "w-5"
-                    }`}
+                    className={`flex items-center justify-center shrink-0 transition-all duration-300 ${isCollapsed ? "w-full" : "w-5"
+                      }`}
                   >
                     <Icon
-                      className={`w-4 h-4 transition-colors ${
-                        isActive
+                      className={`w-4 h-4 transition-colors ${isActive
                           ? "text-[#00A5E5]"
                           : "text-[#8b949e] group-hover:text-gray-100"
-                      }`}
+                        }`}
                     />
                   </div>
 
                   {/* Route Label Text (smooth fade and shrink) */}
                   <span
-                    className={`transition-all duration-300 origin-left whitespace-nowrap overflow-hidden flex-1 ${
-                      isCollapsed
+                    className={`transition-all duration-300 origin-left whitespace-nowrap overflow-hidden flex-1 ${isCollapsed
                         ? "max-w-0 opacity-0 pointer-events-none ml-0"
                         : "max-w-[150px] opacity-100 ml-2.5 text-[13px] font-medium"
-                    }`}
+                      }`}
                   >
                     {item.name}
                   </span>
@@ -220,11 +212,10 @@ export default function Sidebar({
                   {/* Route Badge Bubble (smooth scale and shrink) */}
                   {item.badge && (
                     <span
-                      className={`transition-all duration-300 shrink-0 ${
-                        isCollapsed
+                      className={`transition-all duration-300 shrink-0 ${isCollapsed
                           ? "scale-0 opacity-0 w-0 h-0 p-0 pointer-events-none ml-0"
                           : "scale-100 opacity-100 px-2 py-0.5 ml-2"
-                      } text-[10px] font-extrabold rounded-full ${item.badgeColor}`}
+                        } text-[10px] font-extrabold rounded-full ${item.badgeColor}`}
                     >
                       {item.badge}
                     </span>
@@ -251,9 +242,8 @@ export default function Sidebar({
 
         {/* Footer Sign Out Button */}
         <div
-          className={`p-4 border-t border-[#12151c] ${
-            isCollapsed ? "flex justify-center" : ""
-          }`}
+          className={`p-4 border-t border-[#12151c] ${isCollapsed ? "flex justify-center" : ""
+            }`}
         >
           <div className="relative group/tooltip w-full flex justify-center">
             <button
@@ -262,20 +252,18 @@ export default function Sidebar({
             >
               {/* LogOut Icon Container (smoothly centered on collapse) */}
               <div
-                className={`flex items-center justify-center shrink-0 transition-all duration-300 ${
-                  isCollapsed ? "w-full" : "w-5"
-                }`}
+                className={`flex items-center justify-center shrink-0 transition-all duration-300 ${isCollapsed ? "w-full" : "w-5"
+                  }`}
               >
                 <LogOut className="w-4 h-4 text-[#ef4444]" />
               </div>
 
               {/* LogOut text (smooth fade and shrink) */}
               <span
-                className={`transition-all duration-300 origin-left whitespace-nowrap overflow-hidden flex-1 text-left ${
-                  isCollapsed
+                className={`transition-all duration-300 origin-left whitespace-nowrap overflow-hidden flex-1 text-left ${isCollapsed
                     ? "max-w-0 opacity-0 pointer-events-none ml-0"
                     : "max-w-[150px] opacity-100 ml-2.5 text-[13px] font-semibold"
-                }`}
+                  }`}
               >
                 Sign Out
               </span>
