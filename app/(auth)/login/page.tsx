@@ -7,6 +7,7 @@ import { Layers, Lock, Mail, ArrowRight, Loader2, Eye, EyeOff } from "lucide-rea
 import { useLoginMutation } from "@/redux/feature/authApi";
 import { setUser } from "@/redux/feature/authSlice";
 import { toast } from "sonner";
+import { Logo } from "@/components/icon/logo";
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
@@ -109,9 +110,7 @@ export default function LoginPage() {
 
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.25)] mb-4">
-            <Layers className="w-7 h-7" />
-          </div>
+          <Logo />
           <h1 className="text-xl font-bold text-white tracking-tight">Super Admin Portal</h1>
           <p className="text-xs text-gray-400 mt-1">
             Sign in with your email and password to access the dashboard.
@@ -189,13 +188,13 @@ export default function LoginPage() {
         </form>
 
         {/* Footer info */}
-        <div className="pt-6 mt-6 border-t border-[#1a1d24] flex items-center justify-between text-[11px] text-gray-500">
+        {/* <div className="pt-6 mt-6 border-t border-[#1a1d24] flex items-center justify-between text-[11px] text-gray-500">
           <span className="flex items-center gap-1.5 text-emerald-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
             System Active
           </span>
           <span>GetAvails Admin Portal</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

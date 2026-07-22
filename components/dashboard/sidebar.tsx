@@ -32,7 +32,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import Logo from "../icon/logo";
+import { Logo } from "../icon/logo";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -42,43 +42,43 @@ interface SidebarProps {
 }
 
 export const navigationItems = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutGrid },
+  // { name: "Dashboard", href: "/dashboard", icon: LayoutGrid },
   {
     name: "Verification Center",
     href: "/verification-center",
     icon: ShieldCheck,
-    badge: "847",
+    // badge: "847",
     badgeColor: "bg-[#ff9f1c] text-[#08090a]",
   },
-  { name: "Users", href: "/users", icon: Users },
-  { name: "Organizations", href: "/organizations", icon: Building2 },
-  { name: "Offers", href: "/offers", icon: Tag },
-  { name: "Bookings", href: "/bookings", icon: Calendar },
-  { name: "Contracts", href: "/contracts", icon: FileText },
-  {
-    name: "Messages",
-    href: "/messages",
-    icon: MessageSquare,
-    badge: "12",
-    badgeColor: "bg-[#00b4d8] text-[#08090a]",
-  },
-  { name: "Payments & Settlements", href: "/payments", icon: CreditCard },
-  { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Reports", href: "/reports", icon: FileText },
-  {
-    name: "Support Center",
-    href: "/support",
-    icon: Headphones,
-    badge: "34",
-    badgeColor: "bg-[#00b4d8] text-[#08090a]",
-  },
-  { name: "Content Management", href: "/content", icon: Layers },
-  { name: "Notifications", href: "/notifications", icon: Bell },
-  { name: "Audit Logs", href: "/audit", icon: ClipboardList },
-  { name: "Platform Settings", href: "/settings", icon: Settings },
-  { name: "Admin Management", href: "/admins", icon: UserCheck },
-  { name: "System Health", href: "/system-health", icon: Activity },
-  { name: "Security", href: "/security", icon: Lock },
+  // { name: "Users", href: "/users", icon: Users },
+  // { name: "Organizations", href: "/organizations", icon: Building2 },
+  // { name: "Offers", href: "/offers", icon: Tag },
+  // { name: "Bookings", href: "/bookings", icon: Calendar },
+  // { name: "Contracts", href: "/contracts", icon: FileText },
+  // {
+  //   name: "Messages",
+  //   href: "/messages",
+  //   icon: MessageSquare,
+  //   badge: "12",
+  //   badgeColor: "bg-[#00b4d8] text-[#08090a]",
+  // },
+  // { name: "Payments & Settlements", href: "/payments", icon: CreditCard },
+  // { name: "Analytics", href: "/analytics", icon: BarChart3 },
+  // { name: "Reports", href: "/reports", icon: FileText },
+  // {
+  //   name: "Support Center",
+  //   href: "/support",
+  //   icon: Headphones,
+  //   badge: "34",
+  //   badgeColor: "bg-[#00b4d8] text-[#08090a]",
+  // },
+  // { name: "Content Management", href: "/content", icon: Layers },
+  // { name: "Notifications", href: "/notifications", icon: Bell },
+  // { name: "Audit Logs", href: "/audit", icon: ClipboardList },
+  // { name: "Platform Settings", href: "/settings", icon: Settings },
+  // { name: "Admin Management", href: "/admins", icon: UserCheck },
+  // { name: "System Health", href: "/system-health", icon: Activity },
+  // { name: "Security", href: "/security", icon: Lock },
 ];
 
 export default function Sidebar({
@@ -142,8 +142,8 @@ export default function Sidebar({
             <Logo />
             <div
               className={`flex flex-col transition-all duration-300 origin-left ${isCollapsed
-                  ? "max-w-0 opacity-0 pointer-events-none -translate-x-2"
-                  : "max-w-[150px] opacity-100 translate-x-0"
+                ? "max-w-0 opacity-0 pointer-events-none -translate-x-2"
+                : "max-w-[150px] opacity-100 translate-x-0"
                 }`}
             >
               <span className="text-sm font-bold tracking-tight text-white whitespace-nowrap">
@@ -182,8 +182,8 @@ export default function Sidebar({
                   href={item.href}
                   onClick={onClose}
                   className={`flex items-center transition-all duration-300 group border-t-0 border-r-0 border-b-0 h-[38px] px-3.5 rounded-[10px] relative overflow-hidden ${isActive
-                      ? "bg-gradient-to-r from-[#00A5E5]/20 to-[#00A5E5]/[0.08] text-[#00A5E5] border-l-2 border-l-[#00A5E5] font-semibold"
-                      : "text-[#8b949e] border-l-2 border-l-transparent hover:text-gray-100 hover:bg-[#0f131a]/40"
+                    ? "bg-gradient-to-r from-[#00A5E5]/20 to-[#00A5E5]/[0.08] text-[#00A5E5] border-l-2 border-l-[#00A5E5] font-semibold"
+                    : "text-[#8b949e] border-l-2 border-l-transparent hover:text-gray-100 hover:bg-[#0f131a]/40"
                     }`}
                 >
                   {/* Icon Container (smoothly centered on collapse) */}
@@ -193,8 +193,8 @@ export default function Sidebar({
                   >
                     <Icon
                       className={`w-4 h-4 transition-colors ${isActive
-                          ? "text-[#00A5E5]"
-                          : "text-[#8b949e] group-hover:text-gray-100"
+                        ? "text-[#00A5E5]"
+                        : "text-[#8b949e] group-hover:text-gray-100"
                         }`}
                     />
                   </div>
@@ -202,28 +202,28 @@ export default function Sidebar({
                   {/* Route Label Text (smooth fade and shrink) */}
                   <span
                     className={`transition-all duration-300 origin-left whitespace-nowrap overflow-hidden flex-1 ${isCollapsed
-                        ? "max-w-0 opacity-0 pointer-events-none ml-0"
-                        : "max-w-[150px] opacity-100 ml-2.5 text-[13px] font-medium"
+                      ? "max-w-0 opacity-0 pointer-events-none ml-0"
+                      : "max-w-[150px] opacity-100 ml-2.5 text-[13px] font-medium"
                       }`}
                   >
                     {item.name}
                   </span>
 
                   {/* Route Badge Bubble (smooth scale and shrink) */}
-                  {item.badge && (
+                  {/* {item.badge && (
                     <span
                       className={`transition-all duration-300 shrink-0 ${isCollapsed
-                          ? "scale-0 opacity-0 w-0 h-0 p-0 pointer-events-none ml-0"
-                          : "scale-100 opacity-100 px-2 py-0.5 ml-2"
+                        ? "scale-0 opacity-0 w-0 h-0 p-0 pointer-events-none ml-0"
+                        : "scale-100 opacity-100 px-2 py-0.5 ml-2"
                         } text-[10px] font-extrabold rounded-full ${item.badgeColor}`}
                     >
                       {item.badge}
                     </span>
-                  )}
+                  )} */}
                 </Link>
 
                 {/* Collapsed Sidebar Hover Tooltip */}
-                {isCollapsed && (
+                {/* {isCollapsed && (
                   <div className="absolute left-16 top-1/2 -translate-y-1/2 invisible group-hover/tooltip:visible opacity-0 group-hover/tooltip:opacity-100 transition-all duration-200 bg-[#0c0e12] text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border border-[#1e2229] whitespace-nowrap shadow-xl z-50 pointer-events-none flex items-center gap-2">
                     <span>{item.name}</span>
                     {item.badge && (
@@ -234,7 +234,7 @@ export default function Sidebar({
                       </span>
                     )}
                   </div>
-                )}
+                )} */}
               </div>
             );
           })}
@@ -261,8 +261,8 @@ export default function Sidebar({
               {/* LogOut text (smooth fade and shrink) */}
               <span
                 className={`transition-all duration-300 origin-left whitespace-nowrap overflow-hidden flex-1 text-left ${isCollapsed
-                    ? "max-w-0 opacity-0 pointer-events-none ml-0"
-                    : "max-w-[150px] opacity-100 ml-2.5 text-[13px] font-semibold"
+                  ? "max-w-0 opacity-0 pointer-events-none ml-0"
+                  : "max-w-[150px] opacity-100 ml-2.5 text-[13px] font-semibold"
                   }`}
               >
                 Sign Out

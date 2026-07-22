@@ -182,12 +182,12 @@ export default function VerificationCenterPage() {
           </p>
         </div>
 
-        {pendingCount > 0 && (
+        {/* {pendingCount > 0 && (
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-950/40 border border-amber-500/30 text-amber-400 text-xs font-semibold self-start sm:self-auto shadow-[0_0_15px_rgba(245,158,11,0.08)] animate-pulse">
             <AlertCircle className="w-4 h-4 text-amber-400" />
             <span>{pendingCount} pending review</span>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Filter Tabs & Search Row */}
@@ -460,7 +460,7 @@ export default function VerificationCenterPage() {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#12151a] border border-[#1e2229] flex items-center gap-3">
+                {/* <div className="p-3.5 rounded-xl bg-[#12151a] border border-[#1e2229] flex items-center gap-3">
                   <div className="p-2 bg-[#1a1e26] text-cyan-400 border border-[#222733] rounded-lg shrink-0">
                     <Clock className="w-4 h-4" />
                   </div>
@@ -470,7 +470,7 @@ export default function VerificationCenterPage() {
                       Rank {activeDetails.rank !== undefined ? activeDetails.rank : "N/A"}
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="p-3.5 rounded-xl bg-[#12151a] border border-[#1e2229] flex items-center gap-3">
                   <div className="p-2 bg-[#1a1e26] text-cyan-400 border border-[#222733] rounded-lg shrink-0">
