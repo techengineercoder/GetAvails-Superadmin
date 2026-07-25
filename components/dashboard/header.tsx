@@ -54,16 +54,16 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           </div>
 
           {/* Notifications Icon Button */}
-          <button
+          {/* <button
             className="relative p-2 text-gray-400 hover:text-gray-200 hover:bg-[#0f131a] rounded-xl border border-[#1b202a] transition-colors"
             aria-label="Notifications"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-          </button>
+          </button> */}
 
           {/* Profile Card / Pill with Dropdown */}
-          <div className="relative border-l border-[#1b202a] pl-2">
+          <div className="relative pl-2">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-[#0f131a] transition-colors cursor-pointer"
