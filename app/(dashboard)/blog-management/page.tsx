@@ -112,7 +112,7 @@ export default function BlogManagementPage() {
         toast.success("Category created successfully");
       } else {
         await updateCategory({
-          id: String(editingCategory.id),
+          id: editingCategory.slug,
           data: { name: categoryNameInput },
         }).unwrap();
         toast.success("Category updated successfully");
@@ -546,7 +546,7 @@ export default function BlogManagementPage() {
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
-                        onClick={() => openDeleteModal("category", String(cat.id), cat.name)}
+                        onClick={() => openDeleteModal("category", cat.slug, cat.name)}
                         className="p-1.5 bg-[#12151f] hover:bg-[#1a1e26] border border-[#222733] text-gray-400 hover:text-red-400 rounded-lg transition-colors cursor-pointer"
                         title="Delete Category"
                       >
