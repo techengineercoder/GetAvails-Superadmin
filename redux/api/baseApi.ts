@@ -77,6 +77,7 @@ export const baseApi = createApi({
   tagTypes: [
     "User",
     "InvitationReview",
+    "Blog",
   ],
   endpoints: () => ({}),
 });

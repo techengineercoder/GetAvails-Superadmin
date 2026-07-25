@@ -31,6 +31,7 @@ import {
   GitFork,
   ChevronLeft,
   ChevronRight,
+  NotebookText,
 } from "lucide-react";
 import { Logo } from "../icon/logo";
 
@@ -41,7 +42,15 @@ interface SidebarProps {
   onToggleCollapse?: () => void;
 }
 
-export const navigationItems = [
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: any;
+  badge?: string;
+  badgeColor?: string;
+}
+
+export const navigationItems: NavigationItem[] = [
   // { name: "Dashboard", href: "/dashboard", icon: LayoutGrid },
   {
     name: "Verification Center",
@@ -50,7 +59,11 @@ export const navigationItems = [
     // badge: "847",
     badgeColor: "bg-[#ff9f1c] text-[#08090a]",
   },
-  // { name: "Users", href: "/users", icon: Users },
+  {
+    name: "Blog Management",
+    href: "/blog-management",
+    icon: NotebookText
+  },
   // { name: "Organizations", href: "/organizations", icon: Building2 },
   // { name: "Offers", href: "/offers", icon: Tag },
   // { name: "Bookings", href: "/bookings", icon: Calendar },
@@ -168,7 +181,7 @@ export default function Sidebar({
         </div>
 
         {/* Navigation Items (Scrollable) */}
-        <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+        <nav className={`flex-1 px-3 py-4 space-y-1.5 custom-scrollbar ${isCollapsed ? "overflow-visible" : "overflow-y-auto"}`}>
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -177,7 +190,7 @@ export default function Sidebar({
                 (pathname === "/" || pathname === "/verification-center"));
 
             return (
-              <div key={item.name} className="relative group/tooltip">
+              <div key={item.name} className="relative group/tooltip hover:z-50">
                 <Link
                   href={item.href}
                   onClick={onClose}
@@ -223,7 +236,7 @@ export default function Sidebar({
                 </Link>
 
                 {/* Collapsed Sidebar Hover Tooltip */}
-                {/* {isCollapsed && (
+                {isCollapsed && (
                   <div className="absolute left-16 top-1/2 -translate-y-1/2 invisible group-hover/tooltip:visible opacity-0 group-hover/tooltip:opacity-100 transition-all duration-200 bg-[#0c0e12] text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border border-[#1e2229] whitespace-nowrap shadow-xl z-50 pointer-events-none flex items-center gap-2">
                     <span>{item.name}</span>
                     {item.badge && (
@@ -234,7 +247,7 @@ export default function Sidebar({
                       </span>
                     )}
                   </div>
-                )} */}
+                )}
               </div>
             );
           })}
@@ -245,7 +258,7 @@ export default function Sidebar({
           className={`p-4 border-t border-[#12151c] ${isCollapsed ? "flex justify-center" : ""
             }`}
         >
-          <div className="relative group/tooltip w-full flex justify-center">
+          <div className="relative group/tooltip w-full flex justify-center hover:z-50">
             <button
               onClick={() => setShowSignOutModal(true)}
               className="flex items-center transition-all duration-300 cursor-pointer text-[#ef4444] hover:bg-red-950/30 rounded-xl h-10 w-full px-3.5"
