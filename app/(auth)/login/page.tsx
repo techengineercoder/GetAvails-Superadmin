@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { Layers, Lock, Mail, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
 import { useLoginMutation } from "@/redux/feature/authApi";
@@ -143,9 +144,9 @@ export default function LoginPage() {
               <label className="block text-xs font-medium text-gray-300">
                 Password
               </label>
-              <a href="#" className="text-[11px] font-medium text-cyan-400 hover:text-cyan-300 transition-colors">
+              <Link href="/forgot-password" className="text-[11px] font-medium text-cyan-400 hover:text-cyan-300 transition-colors">
                 Forgot password?
-              </a>
+              </Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />

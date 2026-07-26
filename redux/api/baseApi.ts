@@ -25,6 +25,7 @@ const baseQuery = fetchBaseQuery({
       "resendOTP",
       "forgotPassword",
       "verifyEmail",
+      "verifyOTP",
       "resetPassword",
       "googleLogin",
       "facebookLogin",
