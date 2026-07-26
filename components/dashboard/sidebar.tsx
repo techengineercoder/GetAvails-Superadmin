@@ -32,6 +32,7 @@ import {
   ChevronLeft,
   ChevronRight,
   NotebookText,
+  ShieldAlert,
 } from "lucide-react";
 import { Logo } from "../icon/logo";
 
@@ -63,6 +64,11 @@ export const navigationItems: NavigationItem[] = [
     name: "Blog Management",
     href: "/blog-management",
     icon: NotebookText
+  },
+  {
+    name: "Site Terms & Conditions",
+    href: "/site-terms-managment",
+    icon: ShieldAlert
   },
   // { name: "Organizations", href: "/organizations", icon: Building2 },
   // { name: "Offers", href: "/offers", icon: Tag },
