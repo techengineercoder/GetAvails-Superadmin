@@ -22,6 +22,7 @@ export default function LoginPage() {
   const router = useRouter();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: any) => state.auth?.isAuthenticated);
+  const reduxUser = useSelector((state: any) => state.auth?.user);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,11 +34,21 @@ export default function LoginPage() {
   useEffect(() => {
     const localToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
     const cookieToken = getCookie("token") || getCookie("accessToken");
+    const localUserStr = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+    
+    let localUser = null;
+    try {
+      localUser = localUserStr ? JSON.parse(localUserStr) : null;
+    } catch (e) {
+      console.error("Error parsing user from localStorage:", e);
+    }
 
-    if (isAuthenticated || localToken || cookieToken) {
+    const role = reduxUser?.role || localUser?.role;
+
+    if ((isAuthenticated || localToken || cookieToken) && role === "admin") {
       router.replace("/verification-center");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router, reduxUser]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +66,7 @@ export default function LoginPage() {
         id: response?.data?.id || 1,
         email: email,
         name: response?.data?.name || email.split("@")[0],
-        role: response?.data?.role || "SUPER_ADMIN",
+        role: response?.data?.role || "admin",
         image: null,
         phone: "",
         email_verified_at: new Date().toISOString(),
@@ -63,6 +74,11 @@ export default function LoginPage() {
         is_staff: true,
         created_at: new Date().toISOString(),
       };
+
+      if (user.role !== "admin") {
+        toast.error("Access denied. Only administrators are allowed to access this panel.");
+        return;
+      }
 
       const access =
         response?.data?.token?.access ||

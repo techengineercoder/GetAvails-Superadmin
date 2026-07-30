@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Layers, Loader2 } from "lucide-react";
+import { logout } from "@/redux/feature/authSlice";
 
 // Helper function to read cookie value by name
 function getCookie(name: string): string | null {
@@ -16,27 +17,41 @@ function getCookie(name: string): string | null {
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   const reduxIsAuth = useSelector((state: any) => state.auth?.isAuthenticated);
   const reduxToken = useSelector((state: any) => state.auth?.token);
+  const reduxUser = useSelector((state: any) => state.auth?.user);
 
   const [isChecking, setIsChecking] = useState(true);
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    // Check localStorage, cookies, and redux store for access token
+    // Check localStorage, cookies, and redux store for access token and role
     const localToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
     const cookieToken = getCookie("token") || getCookie("accessToken");
+    const localUserStr = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+    
+    let localUser = null;
+    try {
+      localUser = localUserStr ? JSON.parse(localUserStr) : null;
+    } catch (e) {
+      console.error("Error parsing user from localStorage:", e);
+    }
 
     const hasToken = !!(localToken || cookieToken || reduxToken || reduxIsAuth);
+    const userRole = reduxUser?.role || localUser?.role;
 
-    if (!hasToken) {
+    if (!hasToken || userRole !== "admin") {
       setAuthorized(false);
+      if (hasToken && userRole !== "admin") {
+        dispatch(logout());
+      }
       router.replace("/login");
     } else {
       setAuthorized(true);
     }
     setIsChecking(false);
-  }, [router, reduxIsAuth, reduxToken]);
+  }, [router, reduxIsAuth, reduxToken, reduxUser, dispatch]);
 
   if (isChecking || !authorized) {
     return (
