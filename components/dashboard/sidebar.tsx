@@ -33,6 +33,7 @@ import {
   ChevronRight,
   NotebookText,
   ShieldAlert,
+  UserPlus,
 } from "lucide-react";
 import { Logo } from "../icon/logo";
 
@@ -69,6 +70,11 @@ export const navigationItems: NavigationItem[] = [
     name: "Site Terms & Conditions",
     href: "/site-terms-managment",
     icon: ShieldAlert
+  },
+  {
+    name: "Claim Artist Request",
+    href: "/claim-artist-request",
+    icon: UserPlus
   },
   // { name: "Organizations", href: "/organizations", icon: Building2 },
   // { name: "Offers", href: "/offers", icon: Tag },
