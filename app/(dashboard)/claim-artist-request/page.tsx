@@ -25,8 +25,20 @@ import {
     MessageSquare,
     Sparkles,
     Info,
+    FileText,
+    Download,
+    ExternalLink,
+    Paperclip,
 } from "lucide-react";
 import { toast } from "sonner";
+
+export interface DocumentItem {
+    id: string;
+    name: string;
+    url: string;
+    size: string;
+    type: string;
+}
 
 export interface ClaimArtistRequest {
     id: string;
@@ -47,6 +59,7 @@ export interface ClaimArtistRequest {
     representation: string;
     status: "pending" | "approved" | "rejected";
     submittedAt: string;
+    documents?: DocumentItem[];
     rejectionReason?: string;
     notes?: string;
 }
@@ -71,6 +84,22 @@ const INITIAL_REQUESTS: ClaimArtistRequest[] = [
         representation: "Worldwide",
         status: "pending",
         submittedAt: "2026-08-10T11:20:00Z",
+        documents: [
+            {
+                id: "doc-1",
+                name: "Letter_of_Authorization_Billie_Eilish.pdf",
+                url: "#",
+                size: "2.4 MB",
+                type: "PDF Document",
+            },
+            {
+                id: "doc-2",
+                name: "Paradigm_Agency_Representation_Contract.pdf",
+                url: "#",
+                size: "4.8 MB",
+                type: "PDF Document",
+            },
+        ],
     },
     {
         id: "mock-2",
@@ -91,6 +120,15 @@ const INITIAL_REQUESTS: ClaimArtistRequest[] = [
         representation: "Europe & Asia",
         status: "approved",
         submittedAt: "2026-08-08T14:15:00Z",
+        documents: [
+            {
+                id: "doc-3",
+                name: "WME_Global_Management_Agreement.pdf",
+                url: "#",
+                size: "3.1 MB",
+                type: "PDF Document",
+            },
+        ],
     },
     {
         id: "mock-3",
@@ -111,6 +149,22 @@ const INITIAL_REQUESTS: ClaimArtistRequest[] = [
         representation: "Worldwide",
         status: "pending",
         submittedAt: "2026-08-09T09:45:00Z",
+        documents: [
+            {
+                id: "doc-4",
+                name: "pgLang_Executive_Power_of_Attorney.pdf",
+                url: "#",
+                size: "1.9 MB",
+                type: "PDF Document",
+            },
+            {
+                id: "doc-5",
+                name: "Kendrick_Lamar_Rider_Verification.pdf",
+                url: "#",
+                size: "5.2 MB",
+                type: "PDF Document",
+            },
+        ],
     },
     {
         id: "mock-4",
@@ -132,6 +186,15 @@ const INITIAL_REQUESTS: ClaimArtistRequest[] = [
         status: "rejected",
         submittedAt: "2026-08-06T16:30:00Z",
         rejectionReason: "Missing official authorization documentation from artist management.",
+        documents: [
+            {
+                id: "doc-6",
+                name: "Unverified_Booking_Form.pdf",
+                url: "#",
+                size: "1.1 MB",
+                type: "PDF Document",
+            },
+        ],
     },
 ];
 
@@ -139,7 +202,6 @@ export default function ClaimArtistRequestPage() {
     const [requests, setRequests] = useState<ClaimArtistRequest[]>(INITIAL_REQUESTS);
     const [activeTab, setActiveTab] = useState<"all" | "pending" | "approved" | "rejected">("all");
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedGenre, setSelectedGenre] = useState<string>("all");
 
     // Modal States
     const [selectedRequest, setSelectedRequest] = useState<ClaimArtistRequest | null>(null);
@@ -152,11 +214,6 @@ export default function ClaimArtistRequestPage() {
         return requests.filter((req) => {
             // Tab filter
             if (activeTab !== "all" && req.status !== activeTab) return false;
-
-            // Genre filter
-            if (selectedGenre !== "all" && req.genre.toLowerCase() !== selectedGenre.toLowerCase()) {
-                return false;
-            }
 
             // Search query
             if (searchQuery.trim()) {
@@ -173,7 +230,7 @@ export default function ClaimArtistRequestPage() {
 
             return true;
         });
-    }, [requests, activeTab, searchQuery, selectedGenre]);
+    }, [requests, activeTab, searchQuery]);
 
     // Counts
     const counts = useMemo(() => {
@@ -184,28 +241,6 @@ export default function ClaimArtistRequestPage() {
             rejected: requests.filter((r) => r.status === "rejected").length,
         };
     }, [requests]);
-
-    // Genres list for filter dropdown
-    const genresList = useMemo(() => {
-        const set = new Set<string>();
-        requests.forEach((r) => set.add(r.genre));
-        return Array.from(set);
-    }, [requests]);
-
-    // Toggle favorite
-    const handleToggleFavorite = (id: string, e: React.MouseEvent) => {
-        e.stopPropagation();
-        setRequests((prev) =>
-            prev.map((item) => {
-                if (item.id === id) {
-                    const nextFav = !item.isFavorite;
-                    toast.success(nextFav ? `Added ${item.name} to favorites` : `Removed ${item.name} from favorites`);
-                    return { ...item, isFavorite: nextFav };
-                }
-                return item;
-            })
-        );
-    };
 
     // Open Approval Modal
     const openApproveModal = (req: ClaimArtistRequest, e?: React.MouseEvent) => {
@@ -269,6 +304,30 @@ export default function ClaimArtistRequestPage() {
     const openDetailModal = (req: ClaimArtistRequest) => {
         setSelectedRequest(req);
         setModalType("detail");
+    };
+
+    // Open document in new tab handler
+    const handleOpenDoc = (doc: DocumentItem, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (doc.url && doc.url !== "#") {
+            window.open(doc.url, "_blank", "noopener,noreferrer");
+        } else {
+            // Generate a demo blob for mock items to open preview in a new tab
+            const mockContent = `=======================================================
+VERIFICATION DOCUMENT PREVIEW
+=======================================================
+Document Name : ${doc.name}
+Document Type : ${doc.type}
+File Size     : ${doc.size}
+Submitted Date: ${new Date().toLocaleDateString()}
+Status        : Attached for Claim Verification
+=======================================================
+This is an official verification document attached to the claim request.`;
+            const blob = new Blob([mockContent], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            window.open(url, "_blank", "noopener,noreferrer");
+        }
+        toast.success(`Opening ${doc.name} in a new tab`);
     };
 
     // Status Badge Helper Component
@@ -412,12 +471,9 @@ export default function ClaimArtistRequestPage() {
                     })}
                 </div>
 
-                {/* Search & Genre Controls */}
+                {/* Search Control */}
                 <div className="flex flex-col sm:flex-row items-center gap-3">
-
-
-                    {/* Search Input */}
-                    <div className="relative w-full sm:w-72">
+                    <div className="relative w-full sm:w-80">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                         <input
                             type="text"
@@ -429,7 +485,7 @@ export default function ClaimArtistRequestPage() {
                         {searchQuery && (
                             <button
                                 onClick={() => setSearchQuery("")}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs cursor-pointer"
                             >
                                 <X className="w-3.5 h-3.5" />
                             </button>
@@ -469,7 +525,6 @@ export default function ClaimArtistRequestPage() {
                                                     alt={req.name}
                                                     className="w-14 h-14 rounded-2xl object-cover border border-[#2b3240] shadow-md group-hover:scale-105 transition-transform duration-300"
                                                     onError={(e) => {
-                                                        // Fallback if image fails to load
                                                         (e.target as HTMLElement).style.display = "none";
                                                         (e.target as HTMLElement).nextElementSibling?.classList.remove("hidden");
                                                     }}
@@ -485,21 +540,9 @@ export default function ClaimArtistRequestPage() {
 
                                         {/* Artist Main Details */}
                                         <div>
-                                            <div className="flex items-center gap-2">
-                                                <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-                                                    {req.name}
-                                                </h3>
-                                                {/* <button
-                                                    onClick={(e) => handleToggleFavorite(req.id, e)}
-                                                    title="Toggle Favorite"
-                                                    className="text-gray-500 hover:text-amber-400 transition-colors"
-                                                >
-                                                    <Star
-                                                        className={`w-4 h-4 ${req.isFavorite ? "fill-amber-400 text-amber-400" : "text-gray-500"
-                                                            }`}
-                                                    />
-                                                </button> */}
-                                            </div>
+                                            <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                                                {req.name}
+                                            </h3>
 
                                             <div className="flex items-center gap-2 mt-1 flex-wrap">
                                                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#191e29] border border-[#262d3d] text-gray-300 text-[11px] font-medium">
@@ -553,6 +596,41 @@ export default function ClaimArtistRequestPage() {
                                         <span className="text-gray-300 font-medium">{req.representation}</span>
                                     </div>
                                 </div>
+
+                                {/* Verification Documents Attached */}
+                                {req.documents && req.documents.length > 0 && (
+                                    <div className="p-2.5 rounded-xl bg-[#090b0e] border border-[#191d26] space-y-1.5">
+                                        <div className="flex items-center justify-between text-[11px] text-gray-400 font-medium">
+                                            <span className="flex items-center gap-1.5 text-cyan-400 font-semibold">
+                                                <Paperclip className="w-3.5 h-3.5" /> Verification Documents:
+                                            </span>
+                                            <span className="text-[10px] text-gray-500 font-mono">
+                                                {req.documents.length} File(s)
+                                            </span>
+                                        </div>
+                                        <div className="space-y-1">
+                                            {req.documents.map((doc) => (
+                                                <div
+                                                    key={doc.id}
+                                                    onClick={(e) => handleOpenDoc(doc, e)}
+                                                    className="flex items-center justify-between p-1.5 rounded-lg bg-[#11141c] hover:bg-[#171b26] border border-[#1e2330] hover:border-cyan-500/30 transition-colors cursor-pointer group/doc"
+                                                >
+                                                    <span className="flex items-center gap-1.5 text-[11px] text-gray-300 group-hover/doc:text-cyan-300 truncate max-w-[200px]">
+                                                        <FileText className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                                                        <span className="truncate">{doc.name}</span>
+                                                    </span>
+                                                    <button
+                                                        onClick={(e) => handleOpenDoc(doc, e)}
+                                                        title="Open in new tab"
+                                                        className="p-1 text-gray-400 hover:text-cyan-400 rounded transition-colors cursor-pointer"
+                                                    >
+                                                        <ExternalLink className="w-3.5 h-3.5" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Contact snippet */}
                                 <div className="flex items-center justify-between text-[11px] text-gray-400 pt-1">
@@ -633,7 +711,7 @@ export default function ClaimArtistRequestPage() {
                                     setModalType(null);
                                     setSelectedRequest(null);
                                 }}
-                                className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition-colors"
+                                className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
                             >
                                 <X className="w-5 h-5" />
                             </button>
@@ -716,6 +794,53 @@ export default function ClaimArtistRequestPage() {
                                 </div>
                             </div>
 
+                            {/* Attached Documents Breakdown */}
+                            <div className="p-4 rounded-xl bg-[#090b0e] border border-[#191d26] space-y-3">
+                                <div className="flex items-center justify-between border-b border-[#181d28] pb-2">
+                                    <h4 className="font-semibold text-cyan-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                                        <Paperclip className="w-3.5 h-3.5 text-cyan-400" /> Attached Verification Documents
+                                    </h4>
+                                    <span className="text-[10px] text-gray-400">
+                                        {selectedRequest.documents?.length || 0} File(s) Attached
+                                    </span>
+                                </div>
+
+                                {selectedRequest.documents && selectedRequest.documents.length > 0 ? (
+                                    <div className="space-y-2">
+                                        {selectedRequest.documents.map((doc) => (
+                                            <div
+                                                key={doc.id}
+                                                onClick={(e) => handleOpenDoc(doc, e)}
+                                                className="flex items-center justify-between p-3 rounded-xl bg-[#121620] border border-[#202736] hover:border-cyan-500/40 transition-all cursor-pointer group/doc"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                                                        <FileText className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-semibold text-gray-200 group-hover/doc:text-cyan-300 transition-colors text-xs">
+                                                            {doc.name}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-500 font-mono mt-0.5">
+                                                            {doc.type} • {doc.size}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <button
+                                                    onClick={(e) => handleOpenDoc(doc, e)}
+                                                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#1c2230] hover:bg-[#252e42] text-cyan-300 border border-[#2d384e] transition-colors cursor-pointer"
+                                                >
+                                                    <ExternalLink className="w-3.5 h-3.5" /> Open in New Tab
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-xs text-gray-500 italic">No verification documents attached.</p>
+                                )}
+                            </div>
+
                             {/* Rejection / Note Box if present */}
                             {selectedRequest.rejectionReason && (
                                 <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 space-y-1">
@@ -743,7 +868,7 @@ export default function ClaimArtistRequestPage() {
                                     setModalType(null);
                                     setSelectedRequest(null);
                                 }}
-                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#131720] hover:bg-[#1a202c] text-gray-300 border border-[#262c38]"
+                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#131720] hover:bg-[#1a202c] text-gray-300 border border-[#262c38] cursor-pointer"
                             >
                                 Close
                             </button>
@@ -755,7 +880,7 @@ export default function ClaimArtistRequestPage() {
                                             setRejectReasonInput("");
                                             setModalType("reject");
                                         }}
-                                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30"
+                                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 cursor-pointer"
                                     >
                                         Reject Claim
                                     </button>
@@ -764,7 +889,7 @@ export default function ClaimArtistRequestPage() {
                                             setApprovalNoteInput("");
                                             setModalType("approve");
                                         }}
-                                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40"
+                                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 cursor-pointer"
                                     >
                                         Accept Claim
                                     </button>
@@ -809,7 +934,7 @@ export default function ClaimArtistRequestPage() {
                         <div className="flex items-center justify-end gap-3 pt-2">
                             <button
                                 onClick={() => setModalType(null)}
-                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#131720] hover:bg-[#1a202c] text-gray-300 border border-[#262c38]"
+                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#131720] hover:bg-[#1a202c] text-gray-300 border border-[#262c38] cursor-pointer"
                             >
                                 Cancel
                             </button>
@@ -852,7 +977,7 @@ export default function ClaimArtistRequestPage() {
                         <div className="flex items-center justify-end gap-3 pt-2">
                             <button
                                 onClick={() => setModalType(null)}
-                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#131720] hover:bg-[#1a202c] text-gray-300 border border-[#262c38]"
+                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#131720] hover:bg-[#1a202c] text-gray-300 border border-[#262c38] cursor-pointer"
                             >
                                 Cancel
                             </button>
